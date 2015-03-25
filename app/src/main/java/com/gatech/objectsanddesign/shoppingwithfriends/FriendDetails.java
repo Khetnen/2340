@@ -1,14 +1,13 @@
 package com.gatech.objectsanddesign.shoppingwithfriends;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -78,11 +77,11 @@ public class FriendDetails extends NavigationActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
-        private Friend mFriend;
         TextView mNameText;
         TextView mEmailText;
-        TextView mRatingText;
         TextView mReportsGiven;
+        RatingBar mRating;
+        private Friend mFriend;
 
         public PlaceholderFragment() {
         }
@@ -101,13 +100,20 @@ public class FriendDetails extends NavigationActivity {
             mFriend = getActivity().getIntent().getExtras().getParcelable("EXTRA_Friend");
             mNameText = (TextView) rootView.findViewById(R.id.details_friend_name);
             mEmailText = (TextView) rootView.findViewById(R.id.details_friend_email);
-            mRatingText = (TextView) rootView.findViewById(R.id.details_friend_rating);
+            mRating = (RatingBar) rootView.findViewById(R.id.friend_rating);
             mReportsGiven = (TextView) rootView.findViewById(R.id.details_friend_reports);
             mNameText.setText(mFriend.getFirst() + " " + mFriend.getLast());
             mEmailText.setText(mFriend.getEmail());
-            mRatingText.setText(String.valueOf("Rating: " + mFriend.getRating()));
-            mReportsGiven.setText("Reports not yet implemented.");
-            //Log.d("FRIEND", mFriend.toString());
+
+            FirebaseInterfacer.interfacer.getNumberOfReports(mFriend.getUid(), mReportsGiven);
+
+            mRating.setRating((float) mFriend.getRating());
+            mRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    FirebaseInterfacer.interfacer.setFriendRating(mFriend.getUid(), rating);
+                }
+            });
             return rootView;
         }
 

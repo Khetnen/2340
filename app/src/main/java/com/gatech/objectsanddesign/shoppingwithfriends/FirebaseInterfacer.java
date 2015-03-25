@@ -161,7 +161,7 @@ public class FirebaseInterfacer {
                                                 friend.get(LASTNAME),
                                                 entry.getKey(),
                                                 friend.get(EMAIL),
-                                                (long) entry.getValue()
+                                                (double) entry.getValue()
                                         )
                                 );
                             }
@@ -443,6 +443,27 @@ public class FirebaseInterfacer {
 
             @Override
             public void onGeoQueryError(FirebaseError error) {
+
+            }
+        });
+    }
+
+    public void setFriendRating(String id, float rating) {
+        ref.child(USERS).child(curID).child(FRIENDS).child(id).setValue(rating);
+    }
+
+    public void getNumberOfReports(String id, final TextView mReports) {
+        Query sales = ref.child(USERS).child(id).child(SALES);
+        sales.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int num = ((Map) dataSnapshot.getValue()).keySet().size();
+                mReports.setText(R.string.number_of_reports);
+                mReports.setText(mReports.getText() + " " + num);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
