@@ -76,7 +76,7 @@ public class FirebaseInterfacer {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
                     Map<String, Object> f = new HashMap<>(), u = new HashMap<>();
-                    f.put(friend.getUid(), 0);
+                    f.put(friend.getUid(), 0.0);
                     u.put(curID, 0);
                     ref.child(USERS).child(ref.getAuth().getUid()).child(FRIENDS).updateChildren(f);
                     ref.child(USERS).child(friend.getUid()).child(FRIENDS).updateChildren(u);
