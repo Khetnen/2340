@@ -118,7 +118,6 @@ public class FirebaseInterfacer {
      *
      * @param adapter the list adapter to populate with friends
      */
-
     public void getFriends(final ArrayAdapter<Friend> adapter) {
         iterateOverFriends(new Consumer<Friend>() {
             @Override
@@ -134,6 +133,14 @@ public class FirebaseInterfacer {
     }
 
     private void iterateOverFriends(final Consumer<Friend> consumer) {
+
+        /**
+         * Orders friends by desired attribute
+         *
+         * @param value     value to search for
+         * @param attribute value to order by
+         * @param adapter   Map of friends
+         */
         Query query = ref.child(USERS).child(curID).child(FRIENDS);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -177,6 +184,44 @@ public class FirebaseInterfacer {
     }
 
     /**
+     * Orders friends by desired attribute
+     *
+     * @param value     value to search for
+     * @param attribute value to order by
+     * @param adapter   Map of friends
+     */
+    private void findFriendsBy(final String value, String attribute, final ArrayAdapter<User> adapter) {
+        Query query = ref.child(USERS).orderByChild(attribute)
+                .equalTo(value);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, HashMap> user = (HashMap) dataSnapshot.getValue();
+                if (user != null) {
+                    for (Map.Entry pair : user.entrySet()) {
+                        String friendID = (String) pair.getKey();
+                        HashMap<String, Object> friend = (HashMap) pair.getValue();
+
+                        if (!friendID.equals(curID)) {
+                            adapter.add(new ConcreteUser((String) friend.get(FIRSTNAME),
+                                    (String) friend.get(LASTNAME),
+                                    friendID,
+                                    (String) friend.get(EMAIL)
+                            ));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    /**
      * matches friends ordered by first name
      *
      * @param first   first name to match
@@ -192,7 +237,6 @@ public class FirebaseInterfacer {
      * @param last    last name to match
      * @param friends map of friends
      */
-
     public void matchLastName(String last, ArrayAdapter<User> friends) {
         findFriendsBy(last, LASTNAME, friends);
     }
@@ -212,48 +256,8 @@ public class FirebaseInterfacer {
      *
      * @param request the request to be added
      */
-
     public void addRequest(Request request) {
         ref.child(USERS).child(curID).child(REQUESTS).push().setValue(request.toMap());
-    }
-
-    /**
-     * Add user's sale to database for persistence
-     *
-     * @param sale the sale to be added
-     */
-
-    public void addSale(final Sale sale) {
-        final Firebase saleRef = ref.child(SALES).push();
-        final Firebase userSaleRef = ref.child(USERS).child(curID).child(SALES);
-
-        //Add to sales database
-        saleRef.setValue(sale.toMap());
-
-        //Add reference to user database, with value being the location
-        new GeoFire(userSaleRef).setLocation(saleRef.getKey(), new GeoLocation(
-                sale.getLocation().getLatitude(),
-                sale.getLocation().getLongitude()
-        ));
-
-        //Add references to friends, with value being the location
-        iterateOverFriends(new Consumer<Friend>() {
-            @Override
-            public void preconsume() {
-
-            }
-
-            @Override
-            public void consume(Friend friend) {
-                Firebase friendRef = ref.child(USERS).child(friend.getUid()).child(FRIENDS_SALES);
-                new GeoFire(friendRef).setLocation(saleRef.getKey(), new GeoLocation(
-                        sale.getLocation().getLatitude(),
-                        sale.getLocation().getLongitude()
-                ));
-            }
-        });
-
-        findMatches(sale);
     }
 
     /**
@@ -305,6 +309,44 @@ public class FirebaseInterfacer {
         });
     }
 
+    /**
+     * Add user's sale to database for persistence
+     *
+     * @param sale the sale to be added
+     */
+    public void addSale(final Sale sale) {
+        final Firebase saleRef = ref.child(SALES).push();
+        final Firebase userSaleRef = ref.child(USERS).child(curID).child(SALES);
+
+        //Add to sales database
+        saleRef.setValue(sale.toMap());
+
+        //Add reference to user database, with value being the location
+        new GeoFire(userSaleRef).setLocation(saleRef.getKey(), new GeoLocation(
+                sale.getLocation().getLatitude(),
+                sale.getLocation().getLongitude()
+        ));
+
+        //Add references to friends, with value being the location
+        iterateOverFriends(new Consumer<Friend>() {
+            @Override
+            public void preconsume() {
+
+            }
+
+            @Override
+            public void consume(Friend friend) {
+                Firebase friendRef = ref.child(USERS).child(friend.getUid()).child(FRIENDS_SALES);
+                new GeoFire(friendRef).setLocation(saleRef.getKey(), new GeoLocation(
+                        sale.getLocation().getLatitude(),
+                        sale.getLocation().getLongitude()
+                ));
+            }
+        });
+
+        findMatches(sale);
+    }
+
     private void findMatches(final Sale sale) {
         iterateOverFriends(new Consumer<Friend>() {
             @Override
@@ -340,7 +382,6 @@ public class FirebaseInterfacer {
                 && sale.getPrice() <= request.getPrice());
     }
 
-
     /**
      * set the name of a user
      *
@@ -353,44 +394,6 @@ public class FirebaseInterfacer {
                 Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
                 String name = map.get(FIRSTNAME) + " " + map.get(LASTNAME);
                 view.setText(view.getText() + ", " + name);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    /**
-     * Orders friends by desired attribute
-     *
-     * @param value     value to search for
-     * @param attribute value to order by
-     * @param adapter   Map of friends
-     */
-    private void findFriendsBy(final String value, String attribute, final ArrayAdapter<User> adapter) {
-        Query query = ref.orderByChild(attribute)
-                .equalTo(value);
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, HashMap> user = (HashMap) dataSnapshot.getValue();
-                if (user != null) {
-                    for (Map.Entry pair : user.entrySet()) {
-                        String friendID = (String) pair.getKey();
-                        HashMap<String, Object> friend = (HashMap) pair.getValue();
-
-                        if (!friendID.equals(curID)) {
-                            adapter.add(new ConcreteUser((String) friend.get(FIRSTNAME),
-                                    (String) friend.get(LASTNAME),
-                                    friendID,
-                                    (String) friend.get(EMAIL)
-                            ));
-                        }
-                    }
-                }
             }
 
             @Override

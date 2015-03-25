@@ -3,7 +3,7 @@
     package="com.gatech.objectsanddesign.shoppingwithfriends" >
 
     <uses-sdk>
-        android:minSdkVersion="11"
+        android:minSdkVersion="15"
     </uses-sdk>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
