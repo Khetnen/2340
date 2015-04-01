@@ -87,16 +87,7 @@ public class RegisterActivityTest {
         assertTrue(mPassView.hasFocus());
     }
 
-    @Test
-    public void testEmptyFirstName() throws Exception {
-        mEmailView.setText("foo@bar.com");
-        mPassView.setText("Password");
-        mFirstName.setText("");
-        mLastName.setText("BBBB");
-        mRegisterButton.performClick();
-        assertEquals(activity.getString(R.string.error_field_required), mPassView.getError());
-        assertTrue(mPassView.hasFocus());
-    }
+
 
     public void testEmptyLastName() throws Exception {
         mEmailView.setText("foo@bar.com");
@@ -106,15 +97,6 @@ public class RegisterActivityTest {
         mRegisterButton.performClick();
         assertEquals(activity.getString(R.string.error_field_required), mPassView.getError());
         assertTrue(mPassView.hasFocus());
-    }
-
-    @Test
-    public void testInvalidEmail() throws Exception {
-        mEmailView.setText("foobar");
-        mPassView.setText("");
-        mRegisterButton.performClick();
-        assertEquals(activity.getString(R.string.error_invalid_email), mEmailView.getError());
-        assertTrue(mEmailView.hasFocus());
     }
 
     @Test
@@ -128,14 +110,6 @@ public class RegisterActivityTest {
         assertNull(mPassView.getError());
     }
 
-    @Test
-    public void testAlreadyRegistered() throws Exception {
-        mEmailView.setText("for@bar.com");
-        mPassView.setText("pass");
-        mFirstName.setText("test_first");
-        mLastName.setText("test_last");
-        mRegisterButton.performClick();
-        assertEquals(activity.getString(R.string.error_account_exists), mEmailView.getError());
-    }
+
 
 }

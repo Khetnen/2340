@@ -3,6 +3,7 @@ package com.gatech.objectsanddesign.shoppingwithfriends;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,6 +76,49 @@ public class RegisterActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
+
+        public void attemptRegister() {
+            // Reset errors.
+            mEmailView.setError(null);
+            mPasswordView.setError(null);
+            mFirstName.setError(null);
+            mPasswordView.setError(null);
+
+            // Store values at the time of the login attempt.
+            String email = mEmailView.getText().toString();
+            String password = mPasswordView.getText().toString();
+            String first = mFirstName.getText().toString();
+            String last = mLastName.getText().toString();
+
+            boolean cancel = false;
+            View focusView = null;
+
+
+            // Check for a valid password, if the user entered one.
+            if (TextUtils.isEmpty(password)) {
+                mPasswordView.setError(getString(R.string.error_field_required));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+
+            // Check for a valid email address.
+            if (TextUtils.isEmpty(email)) {
+                mEmailView.setError(getString(R.string.error_field_required));
+                focusView = mEmailView;
+                cancel = true;
+            }
+
+            if (cancel) {
+                // There was an error; don't attempt login and focus the first
+                // form field with an error.
+                focusView.requestFocus();
+            } else {
+                // Show a progress spinner, and kick off a background task to
+                // perform the user login attempt.
+                attemptRegisterAuth(email, password, first, last);
+            }
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -109,11 +153,7 @@ public class RegisterActivity extends ActionBarActivity {
             return rootView;
         }
 
-        public void attemptRegister() {
-            final String email = mEmailView.getText().toString();
-            final String password = mPasswordView.getText().toString();
-            final String first = mFirstName.getText().toString();
-            final String last = mLastName.getText().toString();
+        public void attemptRegisterAuth(final String email, final String password, final String first, final String last) {
 
             ref.createUser(email, password, new Firebase.ResultHandler() {
 
