@@ -1,5 +1,6 @@
 package com.gatech.objectsanddesign.shoppingwithfriends;
 
+import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -32,12 +33,21 @@ public class RegisterActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        activity = Robolectric.buildActivity(RegisterActivity.class).create().get();
-        mEmailView = (EditText) activity.findViewById(R.id.email_input);
-        mPassView = (EditText) activity.findViewById(R.id.password_input);
-        mFirstName = (EditText) activity.findViewById(R.id.first_name_input);
-        mLastName = (EditText) activity.findViewById(R.id.last_name_input);
-        mRegisterButton = (Button) activity.findViewById(R.id.register_button);
+        activity = Robolectric.buildActivity(RegisterActivity.class).create().start().resume().get();
+        activity.getSupportFragmentManager().executePendingTransactions();
+        Fragment frag = activity.getSupportFragmentManager().findFragmentById(R.id.container);
+        assertNotNull(frag);
+
+        Firebase ref = mock(Firebase.class);
+        FirebaseInterfacer.interfacer.setRef(ref);
+        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
+
+
+        mEmailView = (EditText) frag.getView().findViewById(R.id.email_input);
+        mPassView = (EditText) frag.getView().findViewById(R.id.password_input);
+        mFirstName = (EditText) frag.getView().findViewById(R.id.first_name_input);
+        mLastName = (EditText) frag.getView().findViewById(R.id.last_name_input);
+        mRegisterButton = (Button) frag.getView().findViewById(R.id.register_button);
     }
 
     @After
@@ -109,9 +119,6 @@ public class RegisterActivityTest {
 
     @Test
     public void testNewRegister() throws Exception {
-        Firebase ref = mock(Firebase.class);
-        FirebaseInterfacer.interfacer.setRef(ref);
-        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
         mEmailView.setText("foo@bar.com");
         mPassView.setText("pass");
         mFirstName.setText("test_first");
@@ -123,9 +130,6 @@ public class RegisterActivityTest {
 
     @Test
     public void testAlreadyRegistered() throws Exception {
-        Firebase ref = mock(Firebase.class);
-        FirebaseInterfacer.interfacer.setRef(ref);
-        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
         mEmailView.setText("for@bar.com");
         mPassView.setText("pass");
         mFirstName.setText("test_first");
