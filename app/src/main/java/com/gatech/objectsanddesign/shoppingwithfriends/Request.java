@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Class to store requests made by users
  */
-public class Request {
+class Request {
     private String name;
     private double price;
     private boolean matched;
@@ -50,6 +50,14 @@ public class Request {
         return price;
     }
 
+    public void setPrice(double new_price){
+        price=new_price;
+    }
+
+    public void setName(String new_name){
+        name=new_name;
+    }
+
     public String getId() {
         return id;
     }
@@ -83,9 +91,8 @@ public class Request {
 
     /**
      * Set whether a matched sale has been found for the requested item
-     * @param matched whether a matched sale has been found for the requested item
      */
-    public void setMatched(boolean matched) {
-        this.matched = matched;
+    public void setMatchedToTrue() {
+        this.matched = true;
     }
 }

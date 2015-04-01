@@ -50,8 +50,8 @@ public class FriendDetails extends NavigationActivity {
 
     /**
      * implement the remove friend functionality in addition to the default menu
-     * @param item
-     * @return
+     * @param item the menu item selected by the user
+     * @return false for normal operation, true to perform other processing
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,15 +83,12 @@ public class FriendDetails extends NavigationActivity {
         RatingBar mRating;
         private Friend mFriend;
 
-        public PlaceholderFragment() {
-        }
-
         /**
          * Create the view for the fragment
-         * @param inflater
-         * @param container
-         * @param savedInstanceState
-         * @return
+         * @param inflater decompresses the compressed fragment data
+         * @param container The container to inflate the fragment into
+         * @param savedInstanceState saved instance data
+         * @return return created view for the fragment
          */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

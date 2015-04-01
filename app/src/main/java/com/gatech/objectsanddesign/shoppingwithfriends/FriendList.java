@@ -65,9 +65,6 @@ public class FriendList extends NavigationActivity {
         private ListView mFriendsList;
         private ArrayAdapter<Friend> friendsAdapter;
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {

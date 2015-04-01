@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RequestArrayAdaptor extends ArrayAdapter<Request> {
+class RequestArrayAdaptor extends ArrayAdapter<Request> {
 
-    public RequestArrayAdaptor(Context context, int resource) {
-        super(context, resource);
+    public RequestArrayAdaptor(Context context) {
+        super(context, R.layout.list_item_request);
     }
 
     @Override

@@ -75,9 +75,6 @@ public class NewSale extends NavigationActivity {
         private Location mLastLocation;
         private GoogleApiClient mGoogleApiClient;
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -101,7 +98,7 @@ public class NewSale extends NavigationActivity {
                     if (validateInput()) {
                         FirebaseInterfacer.interfacer.addSale(new Sale(
                                 mName.getText().toString(),
-                                new Double(mPrice.getText().toString()),
+                                Double.valueOf(mPrice.getText().toString()),
                                 mLastLocation
                         ));
                         mName.getText().clear();
@@ -118,7 +115,7 @@ public class NewSale extends NavigationActivity {
 
         private boolean validateInput() {
             try {
-                new Double(mPrice.getText().toString());
+                Double.valueOf(mPrice.getText().toString());
                 return true;
             } catch (NumberFormatException ex) {
                 mPrice.setError("Number not a valid price.");

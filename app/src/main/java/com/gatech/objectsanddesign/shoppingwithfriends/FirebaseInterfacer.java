@@ -29,20 +29,20 @@ import java.util.Map;
 
 public class FirebaseInterfacer {
 
-    public static final String BASE = "https://2340.firebaseio.com";
-    public static final String USERS = "users";
-    public static final String FRIENDS = "friends";
-    public static final String FIRSTNAME = "firstName";
-    public static final String LASTNAME = "lastName";
-    public static final String EMAIL = "email";
+    private static final String BASE = "https://2340.firebaseio.com";
+    private static final String USERS = "users";
+    private static final String FRIENDS = "friends";
+    private static final String FIRSTNAME = "firstName";
+    private static final String LASTNAME = "lastName";
+    private static final String EMAIL = "email";
     public static final String REQUEST_NAME = "name";
     public static final String REQUEST_PRICE = "price";
     public static final String REQUEST_MATCHED = "matched";
-    public static final String REQUESTS = "requests";
+    private static final String REQUESTS = "requests";
     public static final String SALE_NAME = "name";
     public static final String SALE_PRICE = "price";
-    public static final String SALES = "sales";
-    public static final String FRIENDS_SALES = "friendsales";
+    private static final String SALES = "sales";
+    private static final String FRIENDS_SALES = "friendsales";
     public static FirebaseInterfacer interfacer = new FirebaseInterfacer();
     private Firebase ref;
     private String curID;
@@ -376,7 +376,7 @@ public class FirebaseInterfacer {
                     @Override
                     public void consume(Request request) {
                         if (isMatched(sale, request)) {
-                            request.setMatched(true);
+                            request.setMatchedToTrue();
                             ref.child(USERS).child(friend.getUid()).child(REQUESTS).child(request.getId()).updateChildren(
                                     request.toMap()
                             );

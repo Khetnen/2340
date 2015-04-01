@@ -51,7 +51,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
 
     private Map<String, Integer> incorrectAttempts;
 
-    Firebase ref;
+    private Firebase ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
+    void attemptLogin() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -153,7 +153,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
+    void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -238,7 +238,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
-    public void attemptAuthenticate(final String email, final String password) {
+    void attemptAuthenticate(final String email, final String password) {
         showProgress(true);
         Query banned = ref.child("banned_users").orderByValue().equalTo(email);
         banned.addValueEventListener(new ValueEventListener() {

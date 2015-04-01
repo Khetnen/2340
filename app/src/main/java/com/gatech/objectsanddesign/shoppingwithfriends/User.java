@@ -65,7 +65,7 @@ public class User implements Parcelable {
 
     /**
      * set the uid for a user
-     * @param uid
+     * @param uid user id
      */
     public void setUid(String uid) {
         this.uid = uid;
@@ -81,7 +81,7 @@ public class User implements Parcelable {
 
     /**
      * set the user's email
-     * @param email
+     * @param email user's email
      */
 
     public void setEmail(String email) {
@@ -115,7 +115,7 @@ public class User implements Parcelable {
     /**
      * Writes a parcel representation of a user
      * @param dest destination parcel
-     * @param flags
+     * @param flags flags about how the parcel should be written
      */
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(first);

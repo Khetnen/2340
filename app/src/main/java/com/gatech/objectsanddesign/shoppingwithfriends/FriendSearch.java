@@ -75,9 +75,6 @@ public class FriendSearch extends NavigationActivity {
         ArrayAdapter<User> mFriendsAdaptor;
         List<User> friends;
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {

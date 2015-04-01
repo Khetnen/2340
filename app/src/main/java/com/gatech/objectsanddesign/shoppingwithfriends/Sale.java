@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Class to store sales reported by users
  */
-public class Sale {
+class Sale {
     private String name;
     private double price;
     private Location location;
@@ -30,6 +30,17 @@ public class Sale {
         return name;
     }
 
+    public void setName(String new_name){
+        name=new_name;
+    }
+
+    public void setPrice(double new_price){
+        price=new_price;
+    }
+
+    public void setLocation(Location new_loc){
+        location=new_loc;
+    }
     /**
      * Get the price of the reported item
      *

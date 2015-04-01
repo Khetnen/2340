@@ -20,7 +20,7 @@ public class Friend extends User {
             return new Friend[size];
         }
     };
-    private double rating;
+    private final double rating;
 
     Friend(String first, String last, String uid, String email, double rating) {
         super(first, last, uid, email);

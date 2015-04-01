@@ -58,9 +58,6 @@ public class MainActivity extends ActionBarActivity {
         Button mSignIn;
         Button mRegister;
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {

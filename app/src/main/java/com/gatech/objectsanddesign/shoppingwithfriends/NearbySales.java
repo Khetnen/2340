@@ -30,6 +30,10 @@ public class NearbySales extends FragmentActivity implements OnMapReadyCallback,
     private Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
 
+    public void setRADIUS(double new_radius){
+        RADIUS=new_radius;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

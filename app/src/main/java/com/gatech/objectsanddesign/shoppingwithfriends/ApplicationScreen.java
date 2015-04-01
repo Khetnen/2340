@@ -21,7 +21,7 @@ public class ApplicationScreen extends NavigationActivity {
 
     /**
      * Initialize the database reference to store for the user
-     * @param savedInstanceState
+     * @param savedInstanceState state to initialize from
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +67,10 @@ public class ApplicationScreen extends NavigationActivity {
 
         /**
          * Populate the fragment with the appropriate text fields and buttons
-         * @param inflater
-         * @param container
-         * @param savedInstanceState
-         * @return
+         * @param inflater decompresses any compressed data
+         * @param container The container to inflate the fragment into
+         * @param savedInstanceState saved instance data
+         * @return return created view for the fragment
          */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +84,7 @@ public class ApplicationScreen extends NavigationActivity {
                 startActivity(i);
             } else {
                 mRequestsList = (ListView) rootView.findViewById(R.id.requests_list);
-                mRequestsAdapter = new RequestArrayAdaptor(getActivity(), R.layout.list_item_request);
+                mRequestsAdapter = new RequestArrayAdaptor(getActivity());
                 mRequestsList.setAdapter(mRequestsAdapter);
                 FirebaseInterfacer.interfacer.getRequests(mRequestsAdapter);
             }

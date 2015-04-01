@@ -72,9 +72,6 @@ public class RegisterActivity extends ActionBarActivity {
         private EditText mLastName;
         private Button mRegister;
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
