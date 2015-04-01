@@ -49,7 +49,10 @@ public class FirebaseInterfacer {
 
     public FirebaseInterfacer() {
         ref = new Firebase(BASE);
-        curID = ref.getAuth().getUid();
+
+        if (ref.getAuth() != null) {
+            curID = ref.getAuth().getUid();
+        }
 
         ref.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
@@ -59,6 +62,14 @@ public class FirebaseInterfacer {
                 }
             }
         });
+    }
+
+    public Firebase getRef() {
+        return ref;
+    }
+
+    public void setRef(Firebase ref) {
+        this.ref = ref;
     }
 
     /**

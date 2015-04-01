@@ -66,7 +66,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == EditorInfo.IME_ACTION_GO || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -86,7 +86,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         incorrectAttempts = new HashMap<>();
         Firebase.setAndroidContext(this);
-        ref = new Firebase("https://2340.firebaseio.com");
+        ref = FirebaseInterfacer.interfacer.getRef();
     }
 
     private void populateAutoComplete() {
@@ -113,7 +113,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -142,15 +142,11 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-//        TODO: Replace this with your own logic
-//        return email.contains("@");
-        return email.length() > 0;
+        return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-//        TODO: Replace this with your own logic
-//        return password.length() > 4;
-        return password.length() > 0;
+        return password.length() > 4;
     }
 
     /**
