@@ -25,7 +25,6 @@ public class NavigationActivity extends ActionBarActivity {
     private ListView mDrawerList;
     private CharSequence mTitle;
     private CharSequence mDrawer;
-    private ArrayAdapter mDrawerAdaptor;
 
     protected void onCreateDrawer() {
         mTitleList = getResources().getStringArray(R.array.navigation_drawer_list);
@@ -60,7 +59,7 @@ public class NavigationActivity extends ActionBarActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
-        mDrawerAdaptor = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mTitleList);
+        ArrayAdapter mDrawerAdaptor = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mTitleList);
         mDrawerList.setAdapter(mDrawerAdaptor);
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());

@@ -215,7 +215,7 @@ public class FirebaseInterfacer {
                         HashMap<String, Object> friend = (HashMap) pair.getValue();
 
                         if (!friendID.equals(curID)) {
-                            adapter.add(new ConcreteUser((String) friend.get(FIRSTNAME),
+                            adapter.add(new User((String) friend.get(FIRSTNAME),
                                     (String) friend.get(LASTNAME),
                                     friendID,
                                     (String) friend.get(EMAIL)

@@ -100,7 +100,7 @@ public class FriendSearch extends NavigationActivity {
             mFriendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ConcreteUser friend = (ConcreteUser) parent.getItemAtPosition(position);
+                    User friend = (User) parent.getItemAtPosition(position);
                     FirebaseInterfacer.interfacer.addFriend(friend, getActivity());
                     mFirst.getText().clear();
                     mLast.getText().clear();

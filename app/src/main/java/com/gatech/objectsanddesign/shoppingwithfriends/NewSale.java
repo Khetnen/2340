@@ -118,7 +118,7 @@ public class NewSale extends NavigationActivity {
 
         private boolean validateInput() {
             try {
-                Double.parseDouble(mPrice.getText().toString());
+                new Double(mPrice.getText().toString());
                 return true;
             } catch (NumberFormatException ex) {
                 mPrice.setError("Number not a valid price.");

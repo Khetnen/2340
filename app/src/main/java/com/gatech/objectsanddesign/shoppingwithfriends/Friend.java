@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Extend the user class to be able to have a rating relationship between a user and a friend
  */
 
-public class Friend extends ConcreteUser{
+public class Friend extends User {
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<Friend> CREATOR = new Parcelable.Creator<Friend>() {
         @Override
@@ -34,11 +34,6 @@ public class Friend extends ConcreteUser{
 
     public double getRating() {
         return rating;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override
