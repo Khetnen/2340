@@ -98,8 +98,7 @@ public class RegisterActivity extends ActionBarActivity {
             mLastName = (EditText) rootView.findViewById(R.id.last_name_input);
 
             Firebase.setAndroidContext(getActivity());
-            ref = new Firebase("https://2340.firebaseio.com");
-
+            ref = FirebaseInterfacer.interfacer.getRef();
             mRegister.setOnClickListener(new View.OnClickListener() {
 
                 @Override
