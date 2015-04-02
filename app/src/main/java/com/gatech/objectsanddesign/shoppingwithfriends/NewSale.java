@@ -122,14 +122,14 @@ public class NewSale extends NavigationActivity {
                 mName.setError("This field is required");
                 result = false;
             }
-            if (mPrice.getText().toString().isEmpty()) {
-                mPrice.setError("This field is required");
-                result = false;
-            }
             try {
                 Double.parseDouble(mPrice.getText().toString());
             } catch (NumberFormatException ex) {
                 mPrice.setError("Number not a valid price.");
+                result = false;
+            }
+            if (mPrice.getText().toString().isEmpty()) {
+                mPrice.setError("This field is required");
                 result = false;
             }
             return result;
