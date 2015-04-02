@@ -80,6 +80,28 @@ public class NewSaleTest {
     }
 
     @Test
+    public void testEmptyAll() throws Exception {
+        mName.setText("");
+        mPrice.setText("");
+        mAddSale.performClick();
+        assertEquals("This field is required", mName.getError());
+        assertTrue(mName.hasFocus());
+        assertEquals("This field is required", mPrice.getError());
+        assertTrue(mPrice.hasFocus());
+    }
+
+    @Test
+    public void testEmptyInvalid() throws Exception {
+        mName.setText("");
+        mPrice.setText("xyz");
+        mAddSale.performClick();
+        assertEquals("This field is required", mName.getError());
+        assertTrue(mName.hasFocus());
+        assertEquals("Number not a valid price.", mPrice.getError());
+        assertTrue(mPrice.hasFocus());
+    }
+
+    @Test
     public void testInvalidPrice() throws Exception {
         mName.setText("foobar");
         mPrice.setText("foobar");
