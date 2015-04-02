@@ -117,13 +117,22 @@ public class NewSale extends NavigationActivity {
         }
 
         private boolean validateInput() {
+            boolean result = true;
+            if (mName.getText().toString().isEmpty()) {
+                mName.setError("This field is required");
+                result = false;
+            }
+            if (mPrice.getText().toString().isEmpty()) {
+                mPrice.setError("This field is required");
+                result = false;
+            }
             try {
                 Double.parseDouble(mPrice.getText().toString());
-                return true;
             } catch (NumberFormatException ex) {
                 mPrice.setError("Number not a valid price.");
-                return false;
+                result = false;
             }
+            return result;
         }
 
         @Override
