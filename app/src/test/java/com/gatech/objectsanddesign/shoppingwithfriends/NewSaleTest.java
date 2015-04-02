@@ -85,7 +85,6 @@ public class NewSaleTest {
         mPrice.setText("");
         mAddSale.performClick();
         assertEquals("This field is required", mName.getError());
-        assertTrue(mName.hasFocus());
         assertEquals("This field is required", mPrice.getError());
         assertTrue(mPrice.hasFocus());
     }
@@ -96,7 +95,6 @@ public class NewSaleTest {
         mPrice.setText("xyz");
         mAddSale.performClick();
         assertEquals("This field is required", mName.getError());
-        assertTrue(mName.hasFocus());
         assertEquals("Number not a valid price.", mPrice.getError());
         assertTrue(mPrice.hasFocus());
     }
@@ -112,9 +110,6 @@ public class NewSaleTest {
 
     @Test
     public void testValidSale() throws Exception {
-        Firebase ref = mock(Firebase.class);
-        FirebaseInterfacer.interfacer.setRef(ref);
-        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
         mName.setText("foobar");
         mPrice.setText("42");
         mAddSale.performClick();
