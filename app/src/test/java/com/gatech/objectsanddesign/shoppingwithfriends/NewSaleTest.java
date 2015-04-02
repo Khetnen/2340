@@ -2,6 +2,7 @@ package com.gatech.objectsanddesign.shoppingwithfriends;
 
 import android.support.v4.app.Fragment;
 import android.widget.AutoCompleteTextView;
+import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -34,6 +35,7 @@ public class NewSaleTest {
     @Before
     public void setUp() throws Exception {
         activity = Robolectric.buildActivity(NewSale.class).create().start().resume().get();
+        activity.getSupportFragmentManager().executePendingTransactions();
         Fragment frag = activity.getSupportFragmentManager().findFragmentById(R.id.container);
         assertNotNull(frag);
 
@@ -41,9 +43,9 @@ public class NewSaleTest {
         FirebaseInterfacer.interfacer.setRef(ref);
         assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
 
-        mAddSale = (Button) activity.findViewById(R.id.add_sale);
-        mName = (EditText) activity.findViewById(R.id.add_sale_name);
-        mPrice = (EditText) activity.findViewById(R.id.add_sale_price);
+        mAddSale = (Button) frag.getView().findViewById(R.id.add_sale);
+        mName = (EditText) frag.getView().findViewById(R.id.add_sale_name);
+        mPrice = (EditText) frag.getView().findViewById(R.id.add_sale_price);
     }
 
     @After
@@ -74,28 +76,6 @@ public class NewSaleTest {
         mPrice.setText("");
         mAddSale.performClick();
         assertEquals("This field is required", mPrice.getError());
-        assertTrue(mPrice.hasFocus());
-    }
-
-    @Test
-    public void testEmptyAll() throws Exception {
-        mName.setText("foobar");
-        mPrice.setText("");
-        mAddSale.performClick();
-        assertEquals("This field is required", mName.getError());
-        assertTrue(mName.hasFocus());
-        assertEquals("This field is required", mPrice.getError());
-        assertTrue(mPrice.hasFocus());
-    }
-
-    @Test
-    public void testEmptyInvalid() throws Exception {
-        mName.setText("foobar");
-        mPrice.setText("xyz");
-        mAddSale.performClick();
-        assertEquals("This field is required", mName.getError());
-        assertTrue(mName.hasFocus());
-        assertEquals("Number not a valid price.", mPrice.getError());
         assertTrue(mPrice.hasFocus());
     }
 
