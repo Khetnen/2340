@@ -1,11 +1,10 @@
 package com.gatech.objectsanddesign.shoppingwithfriends;
 
-import android.widget.AutoCompleteTextView;
+import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
-import com.gatech.objectsanddesign.shoppingwithfriends.NewSale;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,10 +31,18 @@ public class NewSaleTest {
 
     @Before
     public void setUp() throws Exception {
-        activity = Robolectric.buildActivity(NewSale.class).create().get();
-        mAddSale = (Button) activity.findViewById(R.id.add_sale);
-        mName = (EditText) activity.findViewById(R.id.add_sale_name);
-        mPrice = (EditText) activity.findViewById(R.id.add_sale_price);
+        activity = Robolectric.buildActivity(NewSale.class).create().start().resume().get();
+        activity.getSupportFragmentManager().executePendingTransactions();
+        Fragment frag = activity.getSupportFragmentManager().findFragmentById(R.id.container);
+        assertNotNull(frag);
+
+        Firebase ref = mock(Firebase.class);
+        FirebaseInterfacer.interfacer.setRef(ref);
+        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
+
+        mAddSale = (Button) frag.getView().findViewById(R.id.add_sale);
+        mName = (EditText) frag.getView().findViewById(R.id.add_sale_name);
+        mPrice = (EditText) frag.getView().findViewById(R.id.add_sale_price);
     }
 
     @After
