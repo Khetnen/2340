@@ -116,6 +116,10 @@ public class NewSale extends NavigationActivity {
             return rootView;
         }
 
+        /**
+         * Ensure that name is not empty and that price is not empty and is a valid number
+         * @return true if valid inputs, otherwise false
+         */
         private boolean validateInput() {
             boolean result = true;
             if (mName.getText().toString().isEmpty()) {
