@@ -1,10 +1,13 @@
 package com.gatech.objectsanddesign.shoppingwithfriends;
 
 import android.support.v4.app.Fragment;
+import android.widget.AutoCompleteTextView;
+import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
+import com.gatech.objectsanddesign.shoppingwithfriends.NewSale;
 
 import org.junit.After;
 import org.junit.Before;
@@ -77,6 +80,26 @@ public class NewSaleTest {
     }
 
     @Test
+    public void testEmptyAll() throws Exception {
+        mName.setText("");
+        mPrice.setText("");
+        mAddSale.performClick();
+        assertEquals("This field is required", mName.getError());
+        assertEquals("This field is required", mPrice.getError());
+        assertTrue(mPrice.hasFocus());
+    }
+
+    @Test
+    public void testEmptyInvalid() throws Exception {
+        mName.setText("");
+        mPrice.setText("xyz");
+        mAddSale.performClick();
+        assertEquals("This field is required", mName.getError());
+        assertEquals("Number not a valid price.", mPrice.getError());
+        assertTrue(mPrice.hasFocus());
+    }
+
+    @Test
     public void testInvalidPrice() throws Exception {
         mName.setText("foobar");
         mPrice.setText("foobar");
@@ -87,9 +110,6 @@ public class NewSaleTest {
 
     @Test
     public void testValidSale() throws Exception {
-        Firebase ref = mock(Firebase.class);
-        FirebaseInterfacer.interfacer.setRef(ref);
-        assertEquals(ref, FirebaseInterfacer.interfacer.getRef());
         mName.setText("foobar");
         mPrice.setText("42");
         mAddSale.performClick();
