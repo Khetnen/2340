@@ -28,6 +28,7 @@ android {
 //For the robolectric snapshot build
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    mavenCentral()
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.firebase:firebase-client-android:2.2.1'
     compile 'com.firebase:geofire:1.1.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
     //Testing
     testCompile 'junit:junit:4.12'

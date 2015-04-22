@@ -25,12 +25,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+
+import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +57,8 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
+    CallbackManager callbackManager;
+
     private Map<String, Integer> incorrectAttempts;
 
     Firebase ref;
@@ -56,6 +66,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -97,6 +108,48 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
             }
         });
 
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton mFacebookSignInButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        mFacebookSignInButton.setReadPermissions("user_friends");
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                        ref.authWithOAuthToken("facebook", loginResult.getAccessToken().getToken(), new Firebase.AuthResultHandler() {
+                            @Override
+                            public void onAuthenticated(AuthData authData) {
+                                // The Facebook user is now authenticated with Firebase
+                                Intent i = new Intent(LoginActivity.this, ApplicationScreen.class);
+                                startActivity(i);
+                                finish();
+                            }
+
+                            @Override
+                            public void onAuthenticationError(FirebaseError firebaseError) {
+                                // there was an error
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+
+
+
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         incorrectAttempts = new HashMap<>();
@@ -107,6 +160,13 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
 
 
     /**
