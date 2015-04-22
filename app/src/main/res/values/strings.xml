@@ -19,6 +19,7 @@
     <string name="list_friends">List Friends</string>
     <string name="firebase">https://2340.firebasio.com</string>
     <string name="logout">Logout</string>
+    <string name="account">Account</string>
     <string name="remove_friend">Remove Friend</string>
     <string name="add_request">Add Request</string>
     <string name="your_requests">Your Requests</string>
@@ -27,5 +28,9 @@
     <string name="nearby_sales">Nearby Sales</string>
     <string name="title_activity_nearby_sales">Nearby Sales</string>
     <string name="number_of_reports">Number of Sales reported: </string>
+    <string name="title_activity_account">Account</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Change Password</string>
 
 </resources>

@@ -7,6 +7,7 @@
         <item>@string/add_request</item>
         <item>@string/add_sale</item>
         <item>@string/nearby_sales</item>
+        <item>@string/account</item>
         <item>@string/logout</item>
     </string-array>
 

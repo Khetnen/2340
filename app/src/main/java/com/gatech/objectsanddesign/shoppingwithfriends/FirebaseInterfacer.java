@@ -2,6 +2,7 @@ package com.gatech.objectsanddesign.shoppingwithfriends;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -320,6 +321,46 @@ public class FirebaseInterfacer {
         });
     }
 
+    private void iterateOverSales(String id, final Consumer<Sale> consumer) {
+        Query query = ref.child(USERS).child(id).child(SALES);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //dataSnapshot.getValue() is a map from strings (random id) to geographic data. Use the id to index into the sales database.
+                consumer.preconsume();
+                Map<String, Map<String, Object>> sales = (HashMap) dataSnapshot.getValue();
+                if (sales != null) {
+                    for (Map.Entry<String, Map<String, Object>> entry : sales.entrySet()) {
+                        String saleId = entry.getKey();
+                        Query saleQuery = ref.child(SALES).child(saleId);
+                        saleQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Map<String, Object> sale = (HashMap) dataSnapshot.getValue();
+                                consumer.consume(
+                                        new Sale(
+                                                (String) sale.get(SALE_NAME),
+                                                (double) sale.get(SALE_PRICE)
+                                        )
+                                );
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     /**
      * Add user's sale to database for persistence
      *
@@ -358,6 +399,7 @@ public class FirebaseInterfacer {
         findMatches(sale);
     }
 
+    //Iterate over requests made by friends to see if the sale matches, set the request matched to true if it does
     private void findMatches(final Sale sale) {
         iterateOverFriends(new Consumer<Friend>() {
             @Override
@@ -375,8 +417,10 @@ public class FirebaseInterfacer {
 
                     @Override
                     public void consume(Request request) {
+                        Log.d("FIND MATCHES: ", "Trying to match " + request.getName() + " with " + sale.getName());
                         if (isMatched(sale, request)) {
                             request.setMatched(true);
+                            Log.d("FIND MATCHES: ", "Matched " + request.getName() + " with " + sale.getName());
                             ref.child(USERS).child(friend.getUid()).child(REQUESTS).child(request.getId()).updateChildren(
                                     request.toMap()
                             );
@@ -471,6 +515,46 @@ public class FirebaseInterfacer {
                 int num = ((Map) dataSnapshot.getValue()).keySet().size();
                 mReports.setText(R.string.number_of_reports);
                 mReports.setText(mReports.getText() + " " + num);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void resetPassword(String s) {
+        ref.resetPassword(s, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void changePassword(final String oldPassword, final String newPassword) {
+        Query query = ref.child(USERS).child(curID).child(EMAIL);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ref.changePassword((String) dataSnapshot.getValue(),
+                        oldPassword, newPassword, new Firebase.ResultHandler() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(FirebaseError firebaseError) {
+
+                            }
+                        });
             }
 
             @Override

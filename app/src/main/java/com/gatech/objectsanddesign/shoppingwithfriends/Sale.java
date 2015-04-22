@@ -22,6 +22,11 @@ public class Sale {
         this.location = location;
     }
 
+    public Sale(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
     /**
      * Get the name of the reported item
      * @return the name of the reported item

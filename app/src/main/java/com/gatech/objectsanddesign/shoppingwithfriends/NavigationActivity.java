@@ -123,6 +123,9 @@ public class NavigationActivity extends ActionBarActivity {
                 i = new Intent(this, NearbySales.class);
                 break;
             case 6:
+                i = new Intent(this, Account.class);
+                break;
+            case 7:
                 Firebase.setAndroidContext(this);
                 (new Firebase("http://2340.firebaseio.com")).unauth();
                 i = new Intent(this, MainActivity.class);

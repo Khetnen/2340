@@ -74,11 +74,26 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        final Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mForgotPasswordButton = (Button) findViewById(R.id.forgot_password_button);
+        mForgotPasswordButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(mEmailView.getText().toString())){
+                    mEmailView.setError("Please enter a valid email ID");
+                } else {
+                    FirebaseInterfacer.interfacer.resetPassword(mEmailView.getText().toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Check your email for instructions on resetting your password",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
