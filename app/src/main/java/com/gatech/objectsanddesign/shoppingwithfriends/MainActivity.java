@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.facebook.appevents.AppEventsLogger;
+
 /**
  * Activity display for the login/registration screen
  */
@@ -27,6 +29,13 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
